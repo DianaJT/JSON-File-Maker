@@ -29,7 +29,8 @@
   "dependencies": {
     "@types/node": "^12.11.7",
     "axios": "^0.19.0",
-    "fs": "0.0.1-security"
+    "fs": "0.0.1-security",
+    "htmlparser2": "^4.0.0"
   },
   "bin": {
     "jfmaker": "./bin/index.js"
