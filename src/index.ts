@@ -3,5 +3,7 @@
 import saveHTML from './saveHTML';
 import createJSON from './createJSON';
 
-saveHTML('https://github.com/sindresorhus/awesome-nodejs', 'awesome-nodejs.html');
-createJSON();
+saveHTML('https://github.com/sindresorhus/awesome-nodejs', 'tf-awesome-nodejs.html');
+
+// disabled for now
+// createJSON();
