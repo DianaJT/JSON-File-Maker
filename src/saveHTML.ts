@@ -1,15 +1,16 @@
 import axios from 'axios';
 import fs from 'fs';
 
-function saveHTML(url: string, fileName: string) {
-  axios.get(url)
-    .then((response) => {
-      fs.writeFile(fileName, response.data, (err) => {
-        console.error(err);
-      });
-    }, (err) => {
-      console.error(err);
+export default async function saveHTML(url: string, fileName: string) {
+  try {
+    const response = await axios({
+      method: 'get',
+      url,
+      responseType: 'stream'
     });
-}
 
-export = saveHTML
+    response.data.pipe(fs.createWriteStream(`temp/${fileName}`));
+  } catch (error) {
+    console.error(`Could not get data ${error.message}`);
+  }
+}
