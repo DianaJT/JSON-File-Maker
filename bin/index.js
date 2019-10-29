@@ -6,5 +6,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var saveHTML_1 = __importDefault(require("./saveHTML"));
 var createJSON_1 = __importDefault(require("./createJSON"));
-saveHTML_1.default('https://github.com/sindresorhus/awesome-nodejs', 'awesome-nodejs.html');
-createJSON_1.default();
+saveHTML_1.default('https://github.com/sindresorhus/awesome-nodejs', 'temp/awesome-nodejs.html').then(function () { return createJSON_1.default(); });
+// async function main() {
+//   try {
+//     await saveHTML('https://github.com/sindresorhus/awesome-nodejs', 'temp/awesome-nodejs.html');
+//     createJSON();
+//   } catch (err) {
+//     console.error(err);
+//   }
+// }
+// main();
