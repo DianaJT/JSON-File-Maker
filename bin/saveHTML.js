@@ -47,9 +47,7 @@ function saveHTML(url, fileName) {
             try {
                 axios_1.default.get(url)
                     .then(function (response) {
-                    fs_1.default.writeFile(fileName, response.data, function (err) {
-                        console.error(err);
-                    });
+                    fs_1.default.writeFileSync(fileName, response.data);
                 }, function (err) {
                     console.error(err);
                 });

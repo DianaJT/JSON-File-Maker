@@ -5,9 +5,7 @@ export default async function saveHTML(url: string, fileName: string) {
   try {
     axios.get(url)
       .then((response) => {
-        fs.writeFile(fileName, response.data, (err) => {
-          console.error(err);
-        });
+        fs.writeFileSync(fileName, response.data);
       }, (err) => {
         console.error(err);
       });

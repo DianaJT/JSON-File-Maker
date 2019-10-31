@@ -49,50 +49,43 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var htmlparser = __importStar(require("htmlparser2"));
 var fs_1 = __importDefault(require("fs"));
 var soupselect_1 = __importDefault(require("soupselect"));
-var saveHTML_1 = __importDefault(require("./saveHTML"));
 function createString() {
     return __awaiter(this, void 0, void 0, function () {
-        var dom, headers, outputString, j, err_1;
+        var dom, headers, outputString, j;
         return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, saveHTML_1.default('https://github.com/sindresorhus/awesome-nodejs', 'temp/awesome-nodejs.html')];
-                case 1:
-                    _a.sent();
-                    dom = htmlparser.parseDOM(fs_1.default.readFileSync('temp/awesome-nodejs.html').toString());
-                    headers = soupselect_1.default.select(dom, 'h3');
-                    outputString = '';
-                    outputString = outputString.concat('{\n  github: {\n    package: "', headers[3].children[1].data, '",\n    projects: [');
-                    outputString = outputString.concat('{\n      name: "', headers[3].next.next.children[1].children[0].children[0].data);
-                    outputString = outputString.concat('",\n      url: "', headers[3].next.next.children[1].children[0].attribs.href);
-                    outputString = outputString.concat('",\n      description: "', headers[3].next.next.children[1].children[1].data, '"\n    }');
-                    for (j = 3; j < headers[3].next.next.children.length; j += 2) {
-                        outputString = outputString.concat(', {\n      name: "', headers[3].next.next.children[j].children[0].children[0].data);
-                        outputString = outputString.concat('",\n      url: "', headers[3].next.next.children[j].children[0].attribs.href);
-                        outputString = outputString.concat('",\n      description: "', headers[3].next.next.children[j].children[1].data, '"\n    }');
-                    }
-                    outputString = outputString.concat(']\n  }');
-                    // for (let i = 4; i < headers.length - 12; i += 1) {
-                    //   outputString = outputString.concat(', {\n    package: "', headers[i].children[1].data, '",\n    projects: [');
-                    //   outputString = outputString.concat('{\n      name: "', headers[i].next.next.children[1].children[0].children[0].data);
-                    //   outputString = outputString.concat('",\n      url: "', headers[i].next.next.children[1].children[0].attribs.href);
-                    //   outputString = outputString.concat('",\n      description: "', headers[i].next.next.children[1].children[1].data, '"\n    }');
-                    //   for (let j = 3; j < headers[i].next.next.children.length; j += 2) {
-                    //     outputString = outputString.concat(', {\n      name: "', headers[i].next.next.children[j].children[0].children[0].data);
-                    //     outputString = outputString.concat('",\n      url: "', headers[i].next.next.children[j].children[0].attribs.href);
-                    //     outputString = outputString.concat('",\n      description: "', headers[i].next.next.children[j].children[1].data, '"\n    }');
-                    //   }
-                    //   outputString = outputString.concat(']\n  }');
-                    // }
-                    outputString = outputString.concat('\n}');
-                    return [2 /*return*/, outputString];
-                case 2:
-                    err_1 = _a.sent();
-                    console.error(err_1);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
+            try {
+                dom = htmlparser.parseDOM(fs_1.default.readFileSync('temp/awesome-nodejs.html').toString());
+                headers = soupselect_1.default.select(dom, 'h3');
+                outputString = '';
+                outputString = outputString.concat('{\n  github: {\n    package: "', headers[3].children[1].data, '",\n    projects: [');
+                outputString = outputString.concat('{\n      name: "', headers[3].next.next.children[1].children[0].children[0].data);
+                outputString = outputString.concat('",\n      url: "', headers[3].next.next.children[1].children[0].attribs.href);
+                outputString = outputString.concat('",\n      description: "', headers[3].next.next.children[1].children[1].data, '"\n    }');
+                for (j = 3; j < headers[3].next.next.children.length; j += 2) {
+                    outputString = outputString.concat(', {\n      name: "', headers[3].next.next.children[j].children[0].children[0].data);
+                    outputString = outputString.concat('",\n      url: "', headers[3].next.next.children[j].children[0].attribs.href);
+                    outputString = outputString.concat('",\n      description: "', headers[3].next.next.children[j].children[1].data, '"\n    }');
+                }
+                outputString = outputString.concat(']\n  }');
+                // for (let i = 4; i < headers.length - 12; i += 1) {
+                //   outputString = outputString.concat(', {\n    package: "', headers[i].children[1].data, '",\n    projects: [');
+                //   outputString = outputString.concat('{\n      name: "', headers[i].next.next.children[1].children[0].children[0].data);
+                //   outputString = outputString.concat('",\n      url: "', headers[i].next.next.children[1].children[0].attribs.href);
+                //   outputString = outputString.concat('",\n      description: "', headers[i].next.next.children[1].children[1].data, '"\n    }');
+                //   for (let j = 3; j < headers[i].next.next.children.length; j += 2) {
+                //     outputString = outputString.concat(', {\n      name: "', headers[i].next.next.children[j].children[0].children[0].data);
+                //     outputString = outputString.concat('",\n      url: "', headers[i].next.next.children[j].children[0].attribs.href);
+                //     outputString = outputString.concat('",\n      description: "', headers[i].next.next.children[j].children[1].data, '"\n    }');
+                //   }
+                //   outputString = outputString.concat(']\n  }');
+                // }
+                outputString = outputString.concat('\n}');
+                return [2 /*return*/, outputString];
             }
+            catch (err) {
+                console.error(err);
+            }
+            return [2 /*return*/];
         });
     });
 }

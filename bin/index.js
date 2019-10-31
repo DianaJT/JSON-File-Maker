@@ -41,6 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var fs_1 = __importDefault(require("fs"));
+var saveHTML_1 = __importDefault(require("./saveHTML"));
 var createString_1 = __importDefault(require("./createString"));
 // saveHTML('https://github.com/sindresorhus/awesome-nodejs', 'temp/awesome-nodejs.html').then(() => createString());
 function main() {
@@ -49,17 +50,20 @@ function main() {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, createString_1.default()];
+                    _a.trys.push([0, 3, , 4]);
+                    return [4 /*yield*/, saveHTML_1.default('https://github.com/sindresorhus/awesome-nodejs', 'temp/awesome-nodejs.html')];
                 case 1:
+                    _a.sent();
+                    return [4 /*yield*/, createString_1.default()];
+                case 2:
                     ourString = _a.sent();
                     fs_1.default.writeFileSync('temp/awesome-nodejs.json', JSON.stringify(ourString));
-                    return [3 /*break*/, 3];
-                case 2:
+                    return [3 /*break*/, 4];
+                case 3:
                     err_1 = _a.sent();
                     console.error(err_1);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
             }
         });
     });
