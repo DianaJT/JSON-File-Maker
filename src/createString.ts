@@ -2,9 +2,9 @@ import * as htmlparser from 'htmlparser2';
 import fs from 'fs';
 import soupselect from 'soupselect';
 
-export default async function createString() {
+export default async function createString(HTMLString: string) {
   try {
-    const dom = htmlparser.parseDOM(fs.readFileSync('temp/awesome-nodejs.html').toString());
+    const dom = htmlparser.parseDOM(HTMLString);
     const headers = soupselect.select(dom, 'h3');
 
     let outputString = '';
