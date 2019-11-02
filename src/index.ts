@@ -2,15 +2,13 @@
 
 import fs from 'fs';
 import saveHTML from './saveHTML';
-import createString from './createString';
-
-// saveHTML('https://github.com/sindresorhus/awesome-nodejs', 'temp/awesome-nodejs.html').then(() => createString());
+import createObject from './createObject';
 
 async function main() {
   try {
     await saveHTML('https://github.com/sindresorhus/awesome-nodejs', 'temp/awesome-nodejs.html');
-    const ourString = await createString();
-    fs.writeFileSync('temp/awesome-nodejs.json', JSON.stringify(ourString));
+    const github = await createObject();
+    fs.writeFileSync('temp/awesome-nodejs.json', JSON.stringify(github, null, 2));
   } catch (err) {
     console.error(err);
   }

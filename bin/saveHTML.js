@@ -43,19 +43,24 @@ var axios_1 = __importDefault(require("axios"));
 var fs_1 = __importDefault(require("fs"));
 function saveHTML(url, fileName) {
     return __awaiter(this, void 0, void 0, function () {
+        var response, err_1;
         return __generator(this, function (_a) {
-            try {
-                axios_1.default.get(url)
-                    .then(function (response) {
-                    fs_1.default.writeFileSync(fileName, response.data);
-                }, function (err) {
-                    console.error(err);
-                });
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    return [4 /*yield*/, axios_1.default.get(url)];
+                case 1:
+                    response = _a.sent();
+                    return [4 /*yield*/, fs_1.default.promises.writeFile(fileName, response.data)];
+                case 2:
+                    _a.sent();
+                    return [3 /*break*/, 4];
+                case 3:
+                    err_1 = _a.sent();
+                    console.error(err_1);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
             }
-            catch (err) {
-                console.error(err);
-            }
-            return [2 /*return*/];
         });
     });
 }
