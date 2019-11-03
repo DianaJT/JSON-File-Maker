@@ -58,14 +58,14 @@ function createObject() {
                         var headers = soupselect_1.default.select(dom, 'h3');
                         var github = [];
                         github.push({ package: headers[3].children[1].data, projects: [] });
-                        for (var j = 1; j < headers[3].next.next.children.length; j += 2) {
-                            github[0].projects.push({
-                                name: headers[3].next.next.children[j].children[0].children[0].data,
-                                url: headers[3].next.next.children[j].children[0].attribs.href,
-                                description: headers[3].next.next.children[j].children[1].data,
-                            });
-                        }
-                        for (var i = 4; i < headers.length - 12; i += 1) {
+                        // for (let j = 1; j < headers[3].next.next.children.length; j += 2) {
+                        //   github[0].projects.push({
+                        //     name: headers[3].next.next.children[j].children[0].children[0].data,
+                        //     url: headers[3].next.next.children[j].children[0].attribs.href,
+                        //     description: headers[3].next.next.children[j].children[1].data,
+                        //   });
+                        // }
+                        for (var i = 3; i < headers.length - 12; i += 1) {
                             github.push({ package: headers[i].children[1].data, projects: [] });
                             if (headers[i].next.next.children[1].children[0].type === 'tag') {
                                 for (var j = 1; j < headers[i].next.next.children.length; j += 2) {
