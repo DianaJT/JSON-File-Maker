@@ -12,7 +12,7 @@ export default async function createObject():Promise<packageObject[]> {
 
       const github: packageObject[] = [];
 
-      github.push({ package: headers[3].children[1].data, projects: [] });
+      // github.push({ package: headers[3].children[1].data, projects: [] });
 
       // for (let j = 1; j < headers[3].next.next.children.length; j += 2) {
       //   github[0].projects.push({
