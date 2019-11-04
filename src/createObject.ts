@@ -26,10 +26,22 @@ export default async function createObject():Promise<packageObject[]> {
         github.push({ package: headers[i].children[1].data, projects: [] });
         if (headers[i].next.next.children[1].children[0].type === 'tag') {
           for (let j = 1; j < headers[i].next.next.children.length; j += 2) {
+            const currentLine = headers[i].next.next.children[j];
+            let currentDesc = '';
+
+            for (let l = 1; l < currentLine.children.length; l += 1) {
+              if (currentLine.children[l].type === 'text') {
+                currentDesc = currentDesc.concat(currentLine.children[l].data);
+              }
+              if (currentLine.children[l].name === 'code' || currentLine.children[l].name === 'a') {
+                currentDesc = currentDesc.concat(currentLine.children[l].children[0].data);
+              }
+            }
+
             github[i - 3].projects.push({
-              name: headers[i].next.next.children[j].children[0].children[0].data,
-              url: headers[i].next.next.children[j].children[0].attribs.href,
-              description: headers[i].next.next.children[j].children[1].data,
+              name: currentLine.children[0].children[0].data,
+              url: currentLine.children[0].attribs.href,
+              description: currentDesc,
             });
           }
         } else {
@@ -37,13 +49,22 @@ export default async function createObject():Promise<packageObject[]> {
             const subsectionLength = headers[i].next.next.children[j].children[1].children.length;
             for (let k = 1; k < subsectionLength; k += 2) {
               const currentLine = headers[i].next.next.children[j].children[1].children[k];
-              if (currentLine.children.length > 1) {
-                github[i - 3].projects.push({
-                  name: currentLine.children[0].children[0].data,
-                  url: currentLine.children[0].attribs.href,
-                  description: currentLine.children[1].data,
-                });
+              let currentDesc = '';
+
+              for (let l = 1; l < currentLine.children.length; l += 1) {
+                if (currentLine.children[l].type === 'text') {
+                  currentDesc = currentDesc.concat(currentLine.children[l].data);
+                }
+                if (currentLine.children[l].name === 'code' || currentLine.children[l].name === 'a') {
+                  currentDesc = currentDesc.concat(currentLine.children[l].children[0].data);
+                }
               }
+
+              github[i - 3].projects.push({
+                name: currentLine.children[0].children[0].data,
+                url: currentLine.children[0].attribs.href,
+                description: currentDesc,
+              });
             }
           }
         }

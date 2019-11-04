@@ -57,7 +57,7 @@ function createObject() {
                         var dom = htmlparser.parseDOM(fs_1.default.readFileSync('temp/awesome-nodejs.html').toString());
                         var headers = soupselect_1.default.select(dom, 'h3');
                         var github = [];
-                        github.push({ package: headers[3].children[1].data, projects: [] });
+                        // github.push({ package: headers[3].children[1].data, projects: [] });
                         // for (let j = 1; j < headers[3].next.next.children.length; j += 2) {
                         //   github[0].projects.push({
                         //     name: headers[3].next.next.children[j].children[0].children[0].data,
@@ -69,10 +69,20 @@ function createObject() {
                             github.push({ package: headers[i].children[1].data, projects: [] });
                             if (headers[i].next.next.children[1].children[0].type === 'tag') {
                                 for (var j = 1; j < headers[i].next.next.children.length; j += 2) {
+                                    var currentLine = headers[i].next.next.children[j];
+                                    var currentDesc = '';
+                                    for (var l = 1; l < currentLine.children.length; l += 1) {
+                                        if (currentLine.children[l].type === 'text') {
+                                            currentDesc = currentDesc.concat(currentLine.children[l].data);
+                                        }
+                                        if (currentLine.children[l].name === 'code' || currentLine.children[l].name === 'a') {
+                                            currentDesc = currentDesc.concat(currentLine.children[l].children[0].data);
+                                        }
+                                    }
                                     github[i - 3].projects.push({
-                                        name: headers[i].next.next.children[j].children[0].children[0].data,
-                                        url: headers[i].next.next.children[j].children[0].attribs.href,
-                                        description: headers[i].next.next.children[j].children[1].data,
+                                        name: currentLine.children[0].children[0].data,
+                                        url: currentLine.children[0].attribs.href,
+                                        description: currentDesc,
                                     });
                                 }
                             }
@@ -81,13 +91,20 @@ function createObject() {
                                     var subsectionLength = headers[i].next.next.children[j].children[1].children.length;
                                     for (var k = 1; k < subsectionLength; k += 2) {
                                         var currentLine = headers[i].next.next.children[j].children[1].children[k];
-                                        if (currentLine.children.length > 1) {
-                                            github[i - 3].projects.push({
-                                                name: currentLine.children[0].children[0].data,
-                                                url: currentLine.children[0].attribs.href,
-                                                description: currentLine.children[1].data,
-                                            });
+                                        var currentDesc = '';
+                                        for (var l = 1; l < currentLine.children.length; l += 1) {
+                                            if (currentLine.children[l].type === 'text') {
+                                                currentDesc = currentDesc.concat(currentLine.children[l].data);
+                                            }
+                                            if (currentLine.children[l].name === 'code' || currentLine.children[l].name === 'a') {
+                                                currentDesc = currentDesc.concat(currentLine.children[l].children[0].data);
+                                            }
                                         }
+                                        github[i - 3].projects.push({
+                                            name: currentLine.children[0].children[0].data,
+                                            url: currentLine.children[0].attribs.href,
+                                            description: currentDesc,
+                                        });
                                     }
                                 }
                             }
