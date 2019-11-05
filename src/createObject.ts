@@ -59,12 +59,13 @@ export default async function createObject():Promise<packageObject[]> {
                   currentDesc = currentDesc.concat(currentLine.children[l].children[0].data);
                 }
               }
-
-              github[i - 3].projects.push({
-                name: currentLine.children[0].children[0].data,
-                url: currentLine.children[0].attribs.href,
-                description: currentDesc,
-              });
+              if (currentLine.children.length > 1) {
+                github[i - 3].projects.push({
+                  name: currentLine.children[0].children[0].data,
+                  url: currentLine.children[0].attribs.href,
+                  description: currentDesc,
+                });
+              }
             }
           }
         }
