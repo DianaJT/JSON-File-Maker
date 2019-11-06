@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "ts-node ./src/index.ts",
     "build": "tsc",
     "start": "node ./bin/index.js",
     "test": "jest"

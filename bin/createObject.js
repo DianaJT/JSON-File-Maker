@@ -47,53 +47,57 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var htmlparser = __importStar(require("htmlparser2"));
-var fs_1 = __importDefault(require("fs"));
+var fs_1 = require("fs");
+// @ts-ignore
 var soupselect_1 = __importDefault(require("soupselect"));
 function createObject() {
     return __awaiter(this, void 0, void 0, function () {
+        var _this = this;
         return __generator(this, function (_a) {
             try {
-                return [2 /*return*/, new Promise(function (resolve) {
-                        var dom = htmlparser.parseDOM(fs_1.default.readFileSync('temp/awesome-nodejs.html').toString());
-                        var headers = soupselect_1.default.select(dom, 'h3');
-                        var github = [];
-                        github.push({ package: headers[3].children[1].data, projects: [] });
-                        // for (let j = 1; j < headers[3].next.next.children.length; j += 2) {
-                        //   github[0].projects.push({
-                        //     name: headers[3].next.next.children[j].children[0].children[0].data,
-                        //     url: headers[3].next.next.children[j].children[0].attribs.href,
-                        //     description: headers[3].next.next.children[j].children[1].data,
-                        //   });
-                        // }
-                        for (var i = 3; i < headers.length - 12; i += 1) {
-                            github.push({ package: headers[i].children[1].data, projects: [] });
-                            if (headers[i].next.next.children[1].children[0].type === 'tag') {
-                                for (var j = 1; j < headers[i].next.next.children.length; j += 2) {
-                                    github[i - 3].projects.push({
-                                        name: headers[i].next.next.children[j].children[0].children[0].data,
-                                        url: headers[i].next.next.children[j].children[0].attribs.href,
-                                        description: headers[i].next.next.children[j].children[1].data,
-                                    });
-                                }
-                            }
-                            else {
-                                for (var j = 1; j < headers[i].next.next.children.length; j += 2) {
-                                    var subsectionLength = headers[i].next.next.children[j].children[1].children.length;
-                                    for (var k = 1; k < subsectionLength; k += 2) {
-                                        var currentLine = headers[i].next.next.children[j].children[1].children[k];
-                                        if (currentLine.children.length > 1) {
-                                            github[i - 3].projects.push({
-                                                name: currentLine.children[0].children[0].data,
-                                                url: currentLine.children[0].attribs.href,
-                                                description: currentLine.children[1].data,
-                                            });
+                return [2 /*return*/, new Promise(function (resolve) { return __awaiter(_this, void 0, void 0, function () {
+                        var rawHtml, dom, headers, github, i, j, j, subsectionLength, k, currentLine;
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0: return [4 /*yield*/, fs_1.promises.readFile('temp/awesome-nodejs.html')];
+                                case 1:
+                                    rawHtml = (_a.sent()).toString();
+                                    dom = htmlparser.parseDOM(rawHtml);
+                                    headers = soupselect_1.default.select(dom, 'h3');
+                                    github = [];
+                                    github.push({ package: headers[3].children[1].data, projects: [] });
+                                    for (i = 3; i < headers.length - 12; i += 1) {
+                                        github.push({ package: headers[i].children[1].data, projects: [] });
+                                        if (headers[i].next.next.children[1].children[0].type === 'tag') {
+                                            for (j = 1; j < headers[i].next.next.children.length; j += 2) {
+                                                github[i - 3].projects.push({
+                                                    name: headers[i].next.next.children[j].children[0].children[0].data,
+                                                    url: headers[i].next.next.children[j].children[0].attribs.href,
+                                                    description: headers[i].next.next.children[j].children[1].data,
+                                                });
+                                            }
+                                        }
+                                        else {
+                                            for (j = 1; j < headers[i].next.next.children.length; j += 2) {
+                                                subsectionLength = headers[i].next.next.children[j].children[1].children.length;
+                                                for (k = 1; k < subsectionLength; k += 2) {
+                                                    currentLine = headers[i].next.next.children[j].children[1].children[k];
+                                                    if (currentLine.children.length > 1) {
+                                                        github[i - 3].projects.push({
+                                                            name: currentLine.children[0].children[0].data,
+                                                            url: currentLine.children[0].attribs.href,
+                                                            description: currentLine.children[1].data,
+                                                        });
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
-                                }
+                                    resolve(github);
+                                    return [2 /*return*/];
                             }
-                        }
-                        resolve(github);
-                    })];
+                        });
+                    }); })];
             }
             catch (err) {
                 return [2 /*return*/, new Promise(function (_resolve, reject) {

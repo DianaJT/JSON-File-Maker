@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -36,37 +35,53 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var htmlparser = __importStar(require("htmlparser2"));
 var fs_1 = require("fs");
-var saveHTML_1 = __importDefault(require("./saveHTML"));
-var createObject_1 = __importDefault(require("./createObject"));
-function main() {
+// @ts-ignore
+var soupselect_1 = __importDefault(require("soupselect"));
+function createString() {
     return __awaiter(this, void 0, void 0, function () {
-        var github, err_1;
+        var rawHTML, dom, headers, outputString, j, err_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 4, , 5]);
-                    return [4 /*yield*/, saveHTML_1.default('https://github.com/sindresorhus/awesome-nodejs', 'temp/awesome-nodejs.html')];
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, fs_1.promises.readFile('temp/awesome-nodejs.html')];
                 case 1:
-                    _a.sent();
-                    return [4 /*yield*/, createObject_1.default()];
+                    rawHTML = (_a.sent()).toString();
+                    dom = htmlparser.parseDOM(rawHTML);
+                    headers = soupselect_1.default.select(dom, 'h3');
+                    outputString = '';
+                    outputString = outputString.concat('{\n  github: {\n    package: "', headers[3].children[1].data, '",\n    projects: [');
+                    outputString = outputString.concat('{\n      name: "', headers[3].next.next.children[1].children[0].children[0].data);
+                    outputString = outputString.concat('",\n      url: "', headers[3].next.next.children[1].children[0].attribs.href);
+                    outputString = outputString.concat('",\n      description: "', headers[3].next.next.children[1].children[1].data, '"\n    }');
+                    for (j = 3; j < headers[3].next.next.children.length; j += 2) {
+                        outputString = outputString.concat(', {\n      name: "', headers[3].next.next.children[j].children[0].children[0].data);
+                        outputString = outputString.concat('",\n      url: "', headers[3].next.next.children[j].children[0].attribs.href);
+                        outputString = outputString.concat('",\n      description: "', headers[3].next.next.children[j].children[1].data, '"\n    }');
+                    }
+                    outputString = outputString.concat(']\n  }');
+                    outputString = outputString.concat('\n}');
+                    return [2 /*return*/, outputString];
                 case 2:
-                    github = _a.sent();
-                    return [4 /*yield*/, fs_1.promises.writeFile('temp/awesome-nodejs.json', JSON.stringify(github, null, 2))];
-                case 3:
-                    _a.sent();
-                    return [3 /*break*/, 5];
-                case 4:
                     err_1 = _a.sent();
                     console.error(err_1);
-                    return [3 /*break*/, 5];
-                case 5: return [2 /*return*/];
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
             }
         });
     });
 }
-main();
+exports.default = createString;
