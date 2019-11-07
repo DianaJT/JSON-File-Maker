@@ -41,24 +41,36 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var fs_1 = require("fs");
+var process_1 = __importDefault(require("process"));
 var saveHTML_1 = __importDefault(require("./saveHTML"));
 var createObject_1 = __importDefault(require("./createObject"));
+var logMeasurement = function (name, time1, time2) {
+    return console.log("Benchmark [" + name + "]: " + (time2 - time1) / BigInt(1000000) + " ms");
+};
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var github, err_1;
+        var downloadStart, downloadEnd, github, fileWriteStart, fileWriteEnd, err_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 4, , 5]);
+                    downloadStart = process_1.default.hrtime.bigint();
                     return [4 /*yield*/, saveHTML_1.default('https://github.com/sindresorhus/awesome-nodejs', 'temp/awesome-nodejs.html')];
                 case 1:
                     _a.sent();
+                    downloadEnd = process_1.default.hrtime.bigint();
                     return [4 /*yield*/, createObject_1.default()];
                 case 2:
                     github = _a.sent();
+                    fileWriteStart = process_1.default.hrtime.bigint();
                     return [4 /*yield*/, fs_1.promises.writeFile('temp/awesome-nodejs.json', JSON.stringify(github, null, 2))];
                 case 3:
                     _a.sent();
+                    fileWriteEnd = process_1.default.hrtime.bigint();
+                    logMeasurement('downloading html', downloadStart, downloadEnd);
+                    logMeasurement('object creation', downloadEnd, fileWriteStart);
+                    logMeasurement('writing json', fileWriteStart, fileWriteEnd);
+                    logMeasurement('total', downloadStart, fileWriteEnd);
                     return [3 /*break*/, 5];
                 case 4:
                     err_1 = _a.sent();

@@ -40,26 +40,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
-var fs_1 = require("fs");
+var fs_1 = __importDefault(require("fs"));
 function saveHTML(url, fileName) {
     return __awaiter(this, void 0, void 0, function () {
-        var data, err_1;
+        var response, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, axios_1.default.get(url)];
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, axios_1.default({
+                            method: 'get',
+                            url: url,
+                            responseType: 'stream'
+                        })];
                 case 1:
-                    data = (_a.sent()).data;
-                    return [4 /*yield*/, fs_1.promises.writeFile(fileName, data)];
+                    response = _a.sent();
+                    response.data.pipe(fs_1.default.createWriteStream(fileName));
+                    return [3 /*break*/, 3];
                 case 2:
-                    _a.sent();
-                    return [3 /*break*/, 4];
-                case 3:
-                    err_1 = _a.sent();
-                    console.error(err_1);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    error_1 = _a.sent();
+                    console.error("Could not get data " + error_1.message);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
             }
         });
     });

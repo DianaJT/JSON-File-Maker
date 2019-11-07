@@ -54,58 +54,75 @@ function createObject() {
     return __awaiter(this, void 0, void 0, function () {
         var _this = this;
         return __generator(this, function (_a) {
-            try {
-                return [2 /*return*/, new Promise(function (resolve) { return __awaiter(_this, void 0, void 0, function () {
-                        var rawHtml, dom, headers, github, i, j, j, subsectionLength, k, currentLine;
-                        return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0: return [4 /*yield*/, fs_1.promises.readFile('temp/awesome-nodejs.html')];
-                                case 1:
-                                    rawHtml = (_a.sent()).toString();
-                                    dom = htmlparser.parseDOM(rawHtml);
-                                    headers = soupselect_1.default.select(dom, 'h3');
-                                    github = [];
-                                    github.push({ package: headers[3].children[1].data, projects: [] });
-                                    for (i = 3; i < headers.length - 12; i += 1) {
-                                        github.push({ package: headers[i].children[1].data, projects: [] });
-                                        if (headers[i].next.next.children[1].children[0].type === 'tag') {
-                                            for (j = 1; j < headers[i].next.next.children.length; j += 2) {
-                                                github[i - 3].projects.push({
-                                                    name: headers[i].next.next.children[j].children[0].children[0].data,
-                                                    url: headers[i].next.next.children[j].children[0].attribs.href,
-                                                    description: headers[i].next.next.children[j].children[1].data,
-                                                });
+            return [2 /*return*/, new Promise(function (resolve, reject) { return __awaiter(_this, void 0, void 0, function () {
+                    var rawHtml, dom, headers, github, i, j, currentLine, currentDesc, l, j, subsectionLength, k, currentLine, currentDesc, l, err_1;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                _a.trys.push([0, 2, , 3]);
+                                return [4 /*yield*/, fs_1.promises.readFile('temp/awesome-nodejs.html')];
+                            case 1:
+                                rawHtml = (_a.sent()).toString();
+                                dom = htmlparser.parseDOM(rawHtml);
+                                headers = soupselect_1.default.select(dom, 'h3');
+                                github = [];
+                                for (i = 3; i < headers.length - 12; i += 1) {
+                                    github.push({ package: headers[i].children[1].data, projects: [] });
+                                    if (headers[i].next.next.children[1].children[0].type === 'tag') {
+                                        for (j = 1; j < headers[i].next.next.children.length; j += 2) {
+                                            currentLine = headers[i].next.next.children[j];
+                                            currentDesc = '';
+                                            for (l = 1; l < currentLine.children.length; l += 1) {
+                                                if (currentLine.children[l].type === 'text') {
+                                                    currentDesc += currentLine.children[l].data;
+                                                }
+                                                if (currentLine.children[l].name === 'code' || currentLine.children[l].name === 'a') {
+                                                    currentDesc += currentLine.children[l].children[0].data;
+                                                }
                                             }
+                                            github[i - 3].projects.push({
+                                                name: currentLine.children[0].children[0].data,
+                                                url: currentLine.children[0].attribs.href,
+                                                description: currentDesc,
+                                            });
                                         }
-                                        else {
-                                            for (j = 1; j < headers[i].next.next.children.length; j += 2) {
-                                                subsectionLength = headers[i].next.next.children[j].children[1].children.length;
-                                                for (k = 1; k < subsectionLength; k += 2) {
-                                                    currentLine = headers[i].next.next.children[j].children[1].children[k];
-                                                    if (currentLine.children.length > 1) {
-                                                        github[i - 3].projects.push({
-                                                            name: currentLine.children[0].children[0].data,
-                                                            url: currentLine.children[0].attribs.href,
-                                                            description: currentLine.children[1].data,
-                                                        });
+                                    }
+                                    else {
+                                        for (j = 1; j < headers[i].next.next.children.length; j += 2) {
+                                            subsectionLength = headers[i].next.next.children[j].children[1].children.length;
+                                            for (k = 1; k < subsectionLength; k += 2) {
+                                                currentLine = headers[i].next.next.children[j].children[1].children[k];
+                                                currentDesc = '';
+                                                for (l = 1; l < currentLine.children.length; l += 1) {
+                                                    if (currentLine.children[l].type === 'text') {
+                                                        currentDesc += currentLine.children[l].data;
                                                     }
+                                                    if (currentLine.children[l].name === 'code' || currentLine.children[l].name === 'a') {
+                                                        currentDesc += currentLine.children[l].children[0].data;
+                                                    }
+                                                }
+                                                if (currentLine.children.length > 1) {
+                                                    github[i - 3].projects.push({
+                                                        name: currentLine.children[0].children[0].data,
+                                                        url: currentLine.children[0].attribs.href,
+                                                        description: currentDesc,
+                                                    });
                                                 }
                                             }
                                         }
                                     }
-                                    resolve(github);
-                                    return [2 /*return*/];
-                            }
-                        });
-                    }); })];
-            }
-            catch (err) {
-                return [2 /*return*/, new Promise(function (_resolve, reject) {
-                        console.error(err);
-                        reject(err);
-                    })];
-            }
-            return [2 /*return*/];
+                                }
+                                resolve(github);
+                                return [3 /*break*/, 3];
+                            case 2:
+                                err_1 = _a.sent();
+                                console.error(err_1);
+                                reject(err_1);
+                                return [3 /*break*/, 3];
+                            case 3: return [2 /*return*/];
+                        }
+                    });
+                }); })];
         });
     });
 }

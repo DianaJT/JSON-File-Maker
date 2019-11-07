@@ -52,35 +52,43 @@ var fs_1 = require("fs");
 var soupselect_1 = __importDefault(require("soupselect"));
 function createString() {
     return __awaiter(this, void 0, void 0, function () {
-        var rawHTML, dom, headers, outputString, j, err_1;
+        var _this = this;
         return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, fs_1.promises.readFile('temp/awesome-nodejs.html')];
-                case 1:
-                    rawHTML = (_a.sent()).toString();
-                    dom = htmlparser.parseDOM(rawHTML);
-                    headers = soupselect_1.default.select(dom, 'h3');
-                    outputString = '';
-                    outputString = outputString.concat('{\n  github: {\n    package: "', headers[3].children[1].data, '",\n    projects: [');
-                    outputString = outputString.concat('{\n      name: "', headers[3].next.next.children[1].children[0].children[0].data);
-                    outputString = outputString.concat('",\n      url: "', headers[3].next.next.children[1].children[0].attribs.href);
-                    outputString = outputString.concat('",\n      description: "', headers[3].next.next.children[1].children[1].data, '"\n    }');
-                    for (j = 3; j < headers[3].next.next.children.length; j += 2) {
-                        outputString = outputString.concat(', {\n      name: "', headers[3].next.next.children[j].children[0].children[0].data);
-                        outputString = outputString.concat('",\n      url: "', headers[3].next.next.children[j].children[0].attribs.href);
-                        outputString = outputString.concat('",\n      description: "', headers[3].next.next.children[j].children[1].data, '"\n    }');
-                    }
-                    outputString = outputString.concat(']\n  }');
-                    outputString = outputString.concat('\n}');
-                    return [2 /*return*/, outputString];
-                case 2:
-                    err_1 = _a.sent();
-                    console.error(err_1);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
+            return [2 /*return*/, new Promise(function (resolve, reject) { return __awaiter(_this, void 0, void 0, function () {
+                    var rawHTML, dom, headers, outputString, j, err_1;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                _a.trys.push([0, 2, , 3]);
+                                return [4 /*yield*/, fs_1.promises.readFile('temp/awesome-nodejs.html')];
+                            case 1:
+                                rawHTML = (_a.sent()).toString();
+                                dom = htmlparser.parseDOM(rawHTML);
+                                headers = soupselect_1.default.select(dom, 'h3');
+                                outputString = '';
+                                outputString += '{\n  github: {\n    package: "' + headers[3].children[1].data + '",\n    projects: [';
+                                outputString += '{\n  github: {\n    package: "' + headers[3].children[1].data + '",\n    projects: [';
+                                outputString += '{\n      name: "' + headers[3].next.next.children[1].children[0].children[0].data;
+                                outputString += '",\n      url: "' + headers[3].next.next.children[1].children[0].attribs.href;
+                                outputString += '",\n      description: "' + headers[3].next.next.children[1].children[1].data + '"\n    }';
+                                for (j = 3; j < headers[3].next.next.children.length; j += 2) {
+                                    outputString += ', {\n      name: "' + headers[3].next.next.children[j].children[0].children[0].data;
+                                    outputString += '",\n      url: "' + headers[3].next.next.children[j].children[0].attribs.href;
+                                    outputString += '",\n      description: "' + headers[3].next.next.children[j].children[1].data + '"\n    }';
+                                }
+                                outputString += ']\n  }';
+                                outputString += '\n}';
+                                resolve(outputString);
+                                return [3 /*break*/, 3];
+                            case 2:
+                                err_1 = _a.sent();
+                                console.error(err_1);
+                                reject(err_1);
+                                return [3 /*break*/, 3];
+                            case 3: return [2 /*return*/];
+                        }
+                    });
+                }); })];
         });
     });
 }
